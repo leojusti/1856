@@ -11,11 +11,6 @@ library(stargazer)
 
 attach(X2408data)
 
-#X2408data[is.na(X2408data)] <- 0
-
-#new <- na.omit(X2408data)
-
-#all(is.na(exports))
 
 ######### ols
 
