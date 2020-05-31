@@ -313,6 +313,12 @@ end
 
 θ = (randn(1, 10), randn(1,10), randn(10,), randn(1,))
 
+d = randn(1,6)
+
+d'.*θ[1] .+ θ[2]
+
+neural_net(d,θ)
+
 @testset "neural net mean vector output" begin
   n = 100
   x,y = sample_batch(target_f1,n)
