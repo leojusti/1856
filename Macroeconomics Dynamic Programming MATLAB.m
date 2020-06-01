@@ -1,6 +1,6 @@
     %  This matlab program performs the value function iteration for 
 %  social planner's problem in the neo-classical growth model.
-%  Serdar Ozkan, ECO 2061, Winter 2016, serdar.ozkan@utoronto.ca
+%  Serdar Ozkan, ECO 2061, Winter 2020, serdar.ozkan@utoronto.ca
 
 %Question 3
 clear
