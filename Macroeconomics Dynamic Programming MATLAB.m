@@ -64,27 +64,6 @@ for t=2:iter_max % iterations
     end
 end
 
-for t=2:iter_max % iterations
-    for i=1:N % loop through values, k
-        s = size(V(t-1,i,:));
-        for j=1:width(Zprob) % loop through states, Z 
-            vmax=-100000000;
-            for p=1:N % loop through optimizing variable, k'
-                if Zprob(i,j)*K(i)^alpha-K(p)+(1-delta)*K(i)<=0
-                    W(t,i,j,p)=-100000000;
-                else
-                    W(t,i,j,p)=log(Zprob(i,j)*(K(i)^alpha)-K(p)+(1-delta)*K(i))+...
-                    beta*(dot(Zprob(i,j),reshape(V(t-1,p,:), [s(2:end) 1])));
-                    if W(t,i,j,p) > vmax
-                        vmax = W(t,i,j,p);
-                        V(t,i,j) = vmax; 
-                        gk(t,i,j) = p; 
-                    end
-                end
-            end
-        end
-    end
-end
 
 
 
@@ -264,7 +243,7 @@ axis tight
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%7%%%%%%%%% where Justin has made changes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%7%%%%%%%%% 
 
 %Question 7
 clear
