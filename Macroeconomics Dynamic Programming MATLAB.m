@@ -1,6 +1,6 @@
     %  This matlab program performs the value function iteration for 
 %  social planner's problem in the neo-classical growth model.
-%  Serdar Ozkan, ECO 2061, Winter 2016, serdar.ozkan@utoronto.ca
+%  Serdar Ozkan, ECO 2061, Winter 2020, serdar.ozkan@utoronto.ca
 
 %Question 3
 clear
@@ -15,15 +15,55 @@ alpha=0.4;
 beta=0.987;
 delta=0.012;
 
-type Z.xlsx
-z.data = readmatrix('Z.xlsx')
-Z.data = z.data(:,2:end);
+type Zprob.csv
+A = readmatrix('Zprob.xlsx')
+%A(:,1)
 
-type Zprob.xlsx
-Z_prob.data = readmatrix('Zprob.xlsx')
-Z_prob.data = Z_prob.data(:,2:end);
+k_bar=(alpha*beta)^(1/(1-alpha))
+k_bar=(alpha)^(1/(1-alpha))
+% Make sure that your grid points for k include the steady state value of k
+K=[0.05:0.025:0.3]; 
+% K=[0.05:0.01:0.50]; % This is a finer grid points.
+[m,N]=size(K);
+V(1,:)=zeros(1,N); % This is my initial guess. 
 
-%z = cell2mat(struct2cell(z));
+for t=2:iter_max
+    for i=1:N
+        vmax=-100000000;
+        for j=1:N
+            W(t,i,j)=log(A(i,j)*K(i)^alpha-K(j) + (1-delta)*K(i))+beta*V(t-1,j);
+            if(W(t,i,j)>vmax)
+                vmax=W(t,i,j);
+                g(t,i)=j; % Policy function
+                V(t,i)=vmax; % Value function
+            end
+        end
+    end
+end
+
+
+for t=2:iter_max % iterations
+    for i=1:N % loop through values, k
+        s = size(V(t-1,i,:));
+        for j=1:length(A) % loop through states, Z 
+            vmax=-100000000;
+            for p=1:N % loop through optimizing variable, k'
+                if A(i,j)*K(i)^alpha-K(p)+(1-delta)*K(i)<=0
+                    W(t,i,j,p)=-100000000;
+                else
+                    W(t,i,j,p)=log(A(i,j)*(K(i)^alpha)-K(p)+(1-delta)*K(i))+...
+                    beta*(dot(A(i,j,:),reshape(V(t-1,p,:), [s(2:end) 1])));
+                    if W(t,i,j,p) > vmax
+                        vmax = W(t,i,j,p);
+                        V(t,i,j) = vmax; 
+                        gk(t,i,j) = p; 
+                    end
+                end
+            end
+        end
+    end
+end
+
 
 
 
@@ -203,7 +243,7 @@ axis tight
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%7%%%%%%%%% where Justin has made changes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%7%%%%%%%%% 
 
 %Question 7
 clear
